@@ -1,0 +1,50 @@
+-- 1. Create BRANCH Table
+CREATE TABLE BRANCH (
+    Branch_ID VARCHAR(10) PRIMARY KEY,
+    Branch_Name VARCHAR(100) NOT NULL,
+    Location VARCHAR(100),
+    IFSC_Code VARCHAR(20) UNIQUE NOT NULL
+);
+
+-- 2. Create CUSTOMER Table
+CREATE TABLE CUSTOMER (
+    Customer_ID VARCHAR(10) PRIMARY KEY,
+    Name VARCHAR(100) NOT NULL,
+    DOB DATE,
+    Phone VARCHAR(15),
+    Email VARCHAR(100),
+    Address TEXT
+);
+
+-- 3. Create EMPLOYEE Table
+CREATE TABLE EMPLOYEE (
+    Employee_ID VARCHAR(10) PRIMARY KEY,
+    Branch_ID VARCHAR(10),
+    Name VARCHAR(100) NOT NULL,
+    Designation VARCHAR(50),
+    Phone VARCHAR(15),
+    FOREIGN KEY (Branch_ID) REFERENCES BRANCH(Branch_ID) ON DELETE SET NULL
+);
+
+-- 4. Create ACCOUNT Table
+CREATE TABLE ACCOUNT (
+    Account_No VARCHAR(20) PRIMARY KEY,
+    Customer_ID VARCHAR(10),
+    Branch_ID VARCHAR(10),
+    Account_Type VARCHAR(20),
+    Balance DECIMAL(15, 2) DEFAULT 0.00,
+    Open_Date DATE,
+    FOREIGN KEY (Customer_ID) REFERENCES CUSTOMER(Customer_ID) ON DELETE CASCADE,
+    FOREIGN KEY (Branch_ID) REFERENCES BRANCH(Branch_ID) ON DELETE CASCADE
+);
+
+-- 5. Create TRANSACTION Table
+CREATE TABLE TRANSACTION (
+    Transaction_ID VARCHAR(20) PRIMARY KEY,
+    Account_No VARCHAR(20),
+    Transaction_Type VARCHAR(20),
+    Amount DECIMAL(15, 2) NOT NULL,
+    Transaction_Date DATE,
+    Description TEXT,
+    FOREIGN KEY (Account_No) REFERENCES ACCOUNT(Account_No) ON DELETE CASCADE
+);
